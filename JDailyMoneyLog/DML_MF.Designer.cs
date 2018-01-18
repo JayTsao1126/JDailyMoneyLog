@@ -54,18 +54,22 @@
             this.dgvMoneyLog = new System.Windows.Forms.DataGridView();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tvMoneyStatus = new System.Windows.Forms.TreeView();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.imglstMoneyStatus = new System.Windows.Forms.ImageList(this.components);
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.開啟ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.儲存ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.另存新檔ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -92,6 +96,10 @@
             // 檔案ToolStripMenuItem
             // 
             this.檔案ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.開啟ToolStripMenuItem,
+            this.儲存ToolStripMenuItem,
+            this.另存新檔ToolStripMenuItem,
+            this.toolStripMenuItem1,
             this.匯入檔案ToolStripMenuItem,
             this.匯出ToolStripMenuItem,
             this.toolStripMenuItem3,
@@ -248,12 +256,12 @@
             dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvMoneyLog.DefaultCellStyle = dataGridViewCellStyle4;
             this.dgvMoneyLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvMoneyLog.Location = new System.Drawing.Point(300, 0);
+            this.dgvMoneyLog.Location = new System.Drawing.Point(400, 0);
             this.dgvMoneyLog.MultiSelect = false;
             this.dgvMoneyLog.Name = "dgvMoneyLog";
             this.dgvMoneyLog.ReadOnly = true;
             this.dgvMoneyLog.RowTemplate.Height = 24;
-            this.dgvMoneyLog.Size = new System.Drawing.Size(884, 725);
+            this.dgvMoneyLog.Size = new System.Drawing.Size(784, 725);
             this.dgvMoneyLog.TabIndex = 0;
             this.dgvMoneyLog.DoubleClick += new System.EventHandler(this.EditMoneyLog);
             // 
@@ -265,7 +273,7 @@
             this.panel2.Font = new System.Drawing.Font("微軟正黑體", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(300, 725);
+            this.panel2.Size = new System.Drawing.Size(400, 725);
             this.panel2.TabIndex = 1;
             // 
             // tvMoneyStatus
@@ -278,8 +286,16 @@
             this.tvMoneyStatus.Location = new System.Drawing.Point(0, 0);
             this.tvMoneyStatus.Name = "tvMoneyStatus";
             this.tvMoneyStatus.SelectedImageIndex = 0;
-            this.tvMoneyStatus.Size = new System.Drawing.Size(300, 725);
+            this.tvMoneyStatus.Size = new System.Drawing.Size(400, 725);
             this.tvMoneyStatus.TabIndex = 15;
+            // 
+            // imglstMoneyStatus
+            // 
+            this.imglstMoneyStatus.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imglstMoneyStatus.ImageStream")));
+            this.imglstMoneyStatus.TransparentColor = System.Drawing.Color.Transparent;
+            this.imglstMoneyStatus.Images.SetKeyName(0, "balance.png");
+            this.imglstMoneyStatus.Images.SetKeyName(1, "money_bag_dollar.png");
+            this.imglstMoneyStatus.Images.SetKeyName(2, "shopping_cart.png");
             // 
             // toolStrip1
             // 
@@ -302,34 +318,6 @@
             this.toolStrip1.TabIndex = 3;
             this.toolStrip1.Text = "toolStrip1";
             // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 82);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 82);
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 82);
-            // 
-            // imglstMoneyStatus
-            // 
-            this.imglstMoneyStatus.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imglstMoneyStatus.ImageStream")));
-            this.imglstMoneyStatus.TransparentColor = System.Drawing.Color.Transparent;
-            this.imglstMoneyStatus.Images.SetKeyName(0, "balance.png");
-            this.imglstMoneyStatus.Images.SetKeyName(1, "shopping_cart.png");
-            this.imglstMoneyStatus.Images.SetKeyName(2, "money_bag_dollar.png");
-            // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 82);
-            // 
             // toolStripLabel1
             // 
             this.toolStripLabel1.AutoSize = false;
@@ -337,6 +325,11 @@
             this.toolStripLabel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.toolStripLabel1.Name = "toolStripLabel1";
             this.toolStripLabel1.Size = new System.Drawing.Size(287, 75);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 82);
             // 
             // toolStripButton1
             // 
@@ -351,6 +344,11 @@
             this.toolStripButton1.Size = new System.Drawing.Size(200, 75);
             this.toolStripButton1.Text = "Add";
             this.toolStripButton1.Click += new System.EventHandler(this.AddMoneyLog);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 82);
             // 
             // toolStripButton3
             // 
@@ -367,6 +365,27 @@
             this.toolStripButton3.Text = "Del";
             this.toolStripButton3.Click += new System.EventHandler(this.DeleteMoneyLog);
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 82);
+            // 
+            // toolStripButton4
+            // 
+            this.toolStripButton4.AutoSize = false;
+            this.toolStripButton4.Font = new System.Drawing.Font("微軟正黑體", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.toolStripButton4.Image = global::JDailyMoneyLog.Properties.Resources.zoom;
+            this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton4.Name = "toolStripButton4";
+            this.toolStripButton4.Size = new System.Drawing.Size(200, 79);
+            this.toolStripButton4.Text = "Search";
+            this.toolStripButton4.Click += new System.EventHandler(this.SearchMoneyLog);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 82);
+            // 
             // toolStripButton2
             // 
             this.toolStripButton2.AutoSize = false;
@@ -380,21 +399,34 @@
             this.toolStripButton2.Text = "Reset";
             this.toolStripButton2.Click += new System.EventHandler(this.ResetStorageMoney);
             // 
-            // toolStripButton4
-            // 
-            this.toolStripButton4.AutoSize = false;
-            this.toolStripButton4.Font = new System.Drawing.Font("微軟正黑體", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.toolStripButton4.Image = global::JDailyMoneyLog.Properties.Resources.zoom;
-            this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton4.Name = "toolStripButton4";
-            this.toolStripButton4.Size = new System.Drawing.Size(200, 79);
-            this.toolStripButton4.Text = "Search";
-            this.toolStripButton4.Click += new System.EventHandler(this.SearchMoneyLog);
-            // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
             this.toolStripSeparator5.Size = new System.Drawing.Size(6, 82);
+            // 
+            // 開啟ToolStripMenuItem
+            // 
+            this.開啟ToolStripMenuItem.Name = "開啟ToolStripMenuItem";
+            this.開啟ToolStripMenuItem.Size = new System.Drawing.Size(156, 28);
+            this.開啟ToolStripMenuItem.Text = "開啟";
+            this.開啟ToolStripMenuItem.Click += new System.EventHandler(this.開啟ToolStripMenuItem_Click);
+            // 
+            // 儲存ToolStripMenuItem
+            // 
+            this.儲存ToolStripMenuItem.Name = "儲存ToolStripMenuItem";
+            this.儲存ToolStripMenuItem.Size = new System.Drawing.Size(156, 28);
+            this.儲存ToolStripMenuItem.Text = "儲存";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(153, 6);
+            // 
+            // 另存新檔ToolStripMenuItem
+            // 
+            this.另存新檔ToolStripMenuItem.Name = "另存新檔ToolStripMenuItem";
+            this.另存新檔ToolStripMenuItem.Size = new System.Drawing.Size(156, 28);
+            this.另存新檔ToolStripMenuItem.Text = "另存新檔";
             // 
             // DML_MainF
             // 
@@ -405,6 +437,7 @@
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "DML_MainF";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -462,6 +495,10 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripButton toolStripButton4;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripMenuItem 開啟ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 儲存ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 另存新檔ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
     }
 }
 

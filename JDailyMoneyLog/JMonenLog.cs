@@ -56,17 +56,24 @@ namespace JDailyMoneyLog
     {
         private JMoneyLogs JMoney = null;
         private List<JStorageAmount> StorageBalanceList = null;     //各帳戶目前餘額(即時計算)
-        private string MoneyLogFilePath = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "DataSet", "MoneyLogs.json");
+        //private string MoneyLogFilePath = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "DataSet", "MoneyLogs.json");
+
+        public string MoneyLogFilePath { get; set; }
 
         public JMoneySystem()
         {
             JMoney = new JMoneyLogs();
             StorageBalanceList = new List<JStorageAmount>();
+            MoneyLogFilePath = string.Empty;
 
-            Load(MoneyLogFilePath);
+            //Load(MoneyLogFilePath);
         }
 
-        private void Load(string file_path)
+        /// <summary>
+        /// 載入 Money Log 資料檔
+        /// </summary>
+        /// <param name="file_path"></param>
+        public void Load(string file_path)
         {
             if (File.Exists(file_path))
             {
@@ -94,7 +101,7 @@ namespace JDailyMoneyLog
             string json_data = JsonConvert.SerializeObject(JMoney);//存放序列後的文字
             string dir = Path.GetDirectoryName(file_path);
             Directory.CreateDirectory(dir);
-            File.WriteAllText(file_path, IndentJsonString(json_data), Encoding.Unicode);
+            File.WriteAllText(file_path, GlobalVar.IndentJsonString(json_data), Encoding.Unicode);
         }
 
         public void SetStorageAmount(string storage, int amount)
@@ -180,11 +187,6 @@ namespace JDailyMoneyLog
             return list;
         }
 
-        //public List<JMoneyLog> GetMoneyLogList()
-        //{
-        //    return JMoney.MoneyLogList;
-        //}
-
         public List<JMoneyLog> GetMoneyLogList(int year=0, int month=0, int day=0)
         {
             if (year > 0)
@@ -243,42 +245,6 @@ namespace JDailyMoneyLog
                 JMoney.MoneyLogList.RemoveAt(idx);
             }
             RecalcStorageBalance();
-        }
-
-
-        /// <summary>
-        /// 格式化json字符串
-        /// </summary>
-        /// <param name="str"></param>
-        /// <returns></returns>
-        private string IndentJsonString(string str)
-        {
-            string sRet = str;
-            JsonSerializer serializer = new JsonSerializer();
-            using (TextReader tr = new StringReader(str))
-            {
-                using (JsonTextReader jtr = new JsonTextReader(tr))
-                {
-                    object obj = serializer.Deserialize(jtr);
-                    if (obj != null)
-                    {
-                        using (StringWriter textWriter = new StringWriter())
-                        {
-                            using (JsonTextWriter jsonWriter = new JsonTextWriter(textWriter)
-                            {
-                                Formatting = Formatting.Indented,
-                                Indentation = 4,
-                                IndentChar = ' '
-                            })
-                            {
-                                serializer.Serialize(jsonWriter, obj);
-                                sRet = textWriter.ToString();
-                            }
-                        }
-                    }
-                }
-            }
-            return sRet;
         }
 
         /// <summary>

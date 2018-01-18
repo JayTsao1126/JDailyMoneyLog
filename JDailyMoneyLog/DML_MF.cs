@@ -140,5 +140,22 @@ namespace JDailyMoneyLog
             //    MessageBox.Show("查無資料!");
             //}
         }
+
+        private void 開啟ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Title = "Select file";
+            dialog.InitialDirectory = ".\\";
+            dialog.Filter = "Json files|*.json";
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                GlobalVar.SYSParm.MoneyLogFilePath = dialog.FileName;
+                //載入 Money Log 資料
+                GlobalVar.MyMoney.MoneyLogFilePath = GlobalVar.SYSParm.MoneyLogFilePath;
+                GlobalVar.MyMoney.Load(GlobalVar.SYSParm.MoneyLogFilePath);
+                //更新主畫面
+                UpdateMoneyInfoCallback();
+            }
+        }
     }
 }
