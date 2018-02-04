@@ -29,10 +29,13 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DML_MainF));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.檔案ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.開啟ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.儲存ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.另存新檔ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.匯入檔案ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.匯出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
@@ -66,16 +69,17 @@
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.開啟ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.儲存ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.另存新檔ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tc_MoneyLogs = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMoneyLog)).BeginInit();
             this.panel2.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            this.tc_MoneyLogs.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -89,7 +93,7 @@
             this.關於ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1184, 32);
+            this.menuStrip1.Size = new System.Drawing.Size(1424, 32);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -108,27 +112,51 @@
             this.檔案ToolStripMenuItem.Size = new System.Drawing.Size(60, 28);
             this.檔案ToolStripMenuItem.Text = "檔案";
             // 
+            // 開啟ToolStripMenuItem
+            // 
+            this.開啟ToolStripMenuItem.Name = "開啟ToolStripMenuItem";
+            this.開啟ToolStripMenuItem.Size = new System.Drawing.Size(156, 28);
+            this.開啟ToolStripMenuItem.Text = "開啟";
+            this.開啟ToolStripMenuItem.Click += new System.EventHandler(this.開啟ToolStripMenuItem_Click);
+            // 
+            // 儲存ToolStripMenuItem
+            // 
+            this.儲存ToolStripMenuItem.Name = "儲存ToolStripMenuItem";
+            this.儲存ToolStripMenuItem.Size = new System.Drawing.Size(156, 28);
+            this.儲存ToolStripMenuItem.Text = "儲存";
+            // 
+            // 另存新檔ToolStripMenuItem
+            // 
+            this.另存新檔ToolStripMenuItem.Name = "另存新檔ToolStripMenuItem";
+            this.另存新檔ToolStripMenuItem.Size = new System.Drawing.Size(156, 28);
+            this.另存新檔ToolStripMenuItem.Text = "另存新檔";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(153, 6);
+            // 
             // 匯入檔案ToolStripMenuItem
             // 
             this.匯入檔案ToolStripMenuItem.Name = "匯入檔案ToolStripMenuItem";
-            this.匯入檔案ToolStripMenuItem.Size = new System.Drawing.Size(118, 28);
+            this.匯入檔案ToolStripMenuItem.Size = new System.Drawing.Size(156, 28);
             this.匯入檔案ToolStripMenuItem.Text = "匯入";
             // 
             // 匯出ToolStripMenuItem
             // 
             this.匯出ToolStripMenuItem.Name = "匯出ToolStripMenuItem";
-            this.匯出ToolStripMenuItem.Size = new System.Drawing.Size(118, 28);
+            this.匯出ToolStripMenuItem.Size = new System.Drawing.Size(156, 28);
             this.匯出ToolStripMenuItem.Text = "匯出";
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(115, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(153, 6);
             // 
             // 離開ToolStripMenuItem1
             // 
             this.離開ToolStripMenuItem1.Name = "離開ToolStripMenuItem1";
-            this.離開ToolStripMenuItem1.Size = new System.Drawing.Size(118, 28);
+            this.離開ToolStripMenuItem1.Size = new System.Drawing.Size(156, 28);
             this.離開ToolStripMenuItem1.Text = "離開";
             // 
             // 帳目ToolStripMenuItem
@@ -218,7 +246,7 @@
             this.toolStripStatusLabel1});
             this.statusStrip1.Location = new System.Drawing.Point(0, 839);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1184, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1424, 22);
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -230,12 +258,12 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.dgvMoneyLog);
+            this.panel1.Controls.Add(this.tc_MoneyLogs);
             this.panel1.Controls.Add(this.panel2);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 114);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1184, 725);
+            this.panel1.Size = new System.Drawing.Size(1424, 725);
             this.panel1.TabIndex = 2;
             // 
             // dgvMoneyLog
@@ -247,21 +275,13 @@
             this.dgvMoneyLog.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvMoneyLog.BackgroundColor = System.Drawing.Color.WhiteSmoke;
             this.dgvMoneyLog.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvMoneyLog.DefaultCellStyle = dataGridViewCellStyle4;
             this.dgvMoneyLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvMoneyLog.Location = new System.Drawing.Point(400, 0);
+            this.dgvMoneyLog.Location = new System.Drawing.Point(3, 3);
             this.dgvMoneyLog.MultiSelect = false;
             this.dgvMoneyLog.Name = "dgvMoneyLog";
             this.dgvMoneyLog.ReadOnly = true;
             this.dgvMoneyLog.RowTemplate.Height = 24;
-            this.dgvMoneyLog.Size = new System.Drawing.Size(784, 725);
+            this.dgvMoneyLog.Size = new System.Drawing.Size(1060, 682);
             this.dgvMoneyLog.TabIndex = 0;
             this.dgvMoneyLog.DoubleClick += new System.EventHandler(this.EditMoneyLog);
             // 
@@ -273,7 +293,7 @@
             this.panel2.Font = new System.Drawing.Font("微軟正黑體", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(400, 725);
+            this.panel2.Size = new System.Drawing.Size(350, 725);
             this.panel2.TabIndex = 1;
             // 
             // tvMoneyStatus
@@ -286,7 +306,7 @@
             this.tvMoneyStatus.Location = new System.Drawing.Point(0, 0);
             this.tvMoneyStatus.Name = "tvMoneyStatus";
             this.tvMoneyStatus.SelectedImageIndex = 0;
-            this.tvMoneyStatus.Size = new System.Drawing.Size(400, 725);
+            this.tvMoneyStatus.Size = new System.Drawing.Size(350, 725);
             this.tvMoneyStatus.TabIndex = 15;
             // 
             // imglstMoneyStatus
@@ -314,7 +334,7 @@
             this.toolStripSeparator5});
             this.toolStrip1.Location = new System.Drawing.Point(0, 32);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1184, 82);
+            this.toolStrip1.Size = new System.Drawing.Size(1424, 82);
             this.toolStrip1.TabIndex = 3;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -324,7 +344,7 @@
             this.toolStripLabel1.BackgroundImage = global::JDailyMoneyLog.Properties.Resources.Logo;
             this.toolStripLabel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(287, 75);
+            this.toolStripLabel1.Size = new System.Drawing.Size(250, 75);
             // 
             // toolStripSeparator3
             // 
@@ -404,35 +424,44 @@
             this.toolStripSeparator5.Name = "toolStripSeparator5";
             this.toolStripSeparator5.Size = new System.Drawing.Size(6, 82);
             // 
-            // 開啟ToolStripMenuItem
+            // tc_MoneyLogs
             // 
-            this.開啟ToolStripMenuItem.Name = "開啟ToolStripMenuItem";
-            this.開啟ToolStripMenuItem.Size = new System.Drawing.Size(156, 28);
-            this.開啟ToolStripMenuItem.Text = "開啟";
-            this.開啟ToolStripMenuItem.Click += new System.EventHandler(this.開啟ToolStripMenuItem_Click);
+            this.tc_MoneyLogs.Controls.Add(this.tabPage1);
+            this.tc_MoneyLogs.Controls.Add(this.tabPage2);
+            this.tc_MoneyLogs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tc_MoneyLogs.Font = new System.Drawing.Font("微軟正黑體", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tc_MoneyLogs.Location = new System.Drawing.Point(350, 0);
+            this.tc_MoneyLogs.Name = "tc_MoneyLogs";
+            this.tc_MoneyLogs.SelectedIndex = 0;
+            this.tc_MoneyLogs.Size = new System.Drawing.Size(1074, 725);
+            this.tc_MoneyLogs.TabIndex = 2;
             // 
-            // 儲存ToolStripMenuItem
+            // tabPage1
             // 
-            this.儲存ToolStripMenuItem.Name = "儲存ToolStripMenuItem";
-            this.儲存ToolStripMenuItem.Size = new System.Drawing.Size(156, 28);
-            this.儲存ToolStripMenuItem.Text = "儲存";
+            this.tabPage1.Controls.Add(this.dgvMoneyLog);
+            this.tabPage1.Location = new System.Drawing.Point(4, 33);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(1066, 688);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "消費紀錄";
+            this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // toolStripMenuItem1
+            // tabPage2
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(153, 6);
-            // 
-            // 另存新檔ToolStripMenuItem
-            // 
-            this.另存新檔ToolStripMenuItem.Name = "另存新檔ToolStripMenuItem";
-            this.另存新檔ToolStripMenuItem.Size = new System.Drawing.Size(156, 28);
-            this.另存新檔ToolStripMenuItem.Text = "另存新檔";
+            this.tabPage2.Location = new System.Drawing.Point(4, 33);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(1066, 688);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "支出統計表";
+            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // DML_MainF
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1184, 861);
+            this.ClientSize = new System.Drawing.Size(1424, 861);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
@@ -453,6 +482,8 @@
             this.panel2.ResumeLayout(false);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            this.tc_MoneyLogs.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -499,6 +530,9 @@
         private System.Windows.Forms.ToolStripMenuItem 儲存ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 另存新檔ToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.TabControl tc_MoneyLogs;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
     }
 }
 
