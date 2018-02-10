@@ -54,7 +54,10 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.tc_MoneyLogs = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
             this.dgvMoneyLog = new System.Windows.Forms.DataGridView();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tvMoneyStatus = new System.Windows.Forms.TreeView();
             this.imglstMoneyStatus = new System.Windows.Forms.ImageList(this.components);
@@ -69,17 +72,14 @@
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.tc_MoneyLogs = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.tc_MoneyLogs.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMoneyLog)).BeginInit();
             this.panel2.SuspendLayout();
             this.toolStrip1.SuspendLayout();
-            this.tc_MoneyLogs.SuspendLayout();
-            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -158,6 +158,7 @@
             this.離開ToolStripMenuItem1.Name = "離開ToolStripMenuItem1";
             this.離開ToolStripMenuItem1.Size = new System.Drawing.Size(156, 28);
             this.離開ToolStripMenuItem1.Text = "離開";
+            this.離開ToolStripMenuItem1.Click += new System.EventHandler(this.離開ToolStripMenuItem1_Click);
             // 
             // 帳目ToolStripMenuItem
             // 
@@ -239,6 +240,7 @@
             this.關於DMLToolStripMenuItem.Name = "關於DMLToolStripMenuItem";
             this.關於DMLToolStripMenuItem.Size = new System.Drawing.Size(167, 28);
             this.關於DMLToolStripMenuItem.Text = "關於 DML";
+            this.關於DMLToolStripMenuItem.Click += new System.EventHandler(this.關於DMLToolStripMenuItem_Click);
             // 
             // statusStrip1
             // 
@@ -266,6 +268,29 @@
             this.panel1.Size = new System.Drawing.Size(1424, 725);
             this.panel1.TabIndex = 2;
             // 
+            // tc_MoneyLogs
+            // 
+            this.tc_MoneyLogs.Controls.Add(this.tabPage1);
+            this.tc_MoneyLogs.Controls.Add(this.tabPage2);
+            this.tc_MoneyLogs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tc_MoneyLogs.Font = new System.Drawing.Font("微軟正黑體", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tc_MoneyLogs.Location = new System.Drawing.Point(350, 0);
+            this.tc_MoneyLogs.Name = "tc_MoneyLogs";
+            this.tc_MoneyLogs.SelectedIndex = 0;
+            this.tc_MoneyLogs.Size = new System.Drawing.Size(1074, 725);
+            this.tc_MoneyLogs.TabIndex = 2;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.dgvMoneyLog);
+            this.tabPage1.Location = new System.Drawing.Point(4, 33);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(1066, 688);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "消費紀錄";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
             // dgvMoneyLog
             // 
             this.dgvMoneyLog.AllowUserToAddRows = false;
@@ -284,6 +309,16 @@
             this.dgvMoneyLog.Size = new System.Drawing.Size(1060, 682);
             this.dgvMoneyLog.TabIndex = 0;
             this.dgvMoneyLog.DoubleClick += new System.EventHandler(this.EditMoneyLog);
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Location = new System.Drawing.Point(4, 33);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(1066, 688);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "支出統計表";
+            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // panel2
             // 
@@ -424,39 +459,6 @@
             this.toolStripSeparator5.Name = "toolStripSeparator5";
             this.toolStripSeparator5.Size = new System.Drawing.Size(6, 82);
             // 
-            // tc_MoneyLogs
-            // 
-            this.tc_MoneyLogs.Controls.Add(this.tabPage1);
-            this.tc_MoneyLogs.Controls.Add(this.tabPage2);
-            this.tc_MoneyLogs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tc_MoneyLogs.Font = new System.Drawing.Font("微軟正黑體", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tc_MoneyLogs.Location = new System.Drawing.Point(350, 0);
-            this.tc_MoneyLogs.Name = "tc_MoneyLogs";
-            this.tc_MoneyLogs.SelectedIndex = 0;
-            this.tc_MoneyLogs.Size = new System.Drawing.Size(1074, 725);
-            this.tc_MoneyLogs.TabIndex = 2;
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.dgvMoneyLog);
-            this.tabPage1.Location = new System.Drawing.Point(4, 33);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1066, 688);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "消費紀錄";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 33);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1066, 688);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "支出統計表";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
             // DML_MainF
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -478,12 +480,12 @@
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.panel1.ResumeLayout(false);
+            this.tc_MoneyLogs.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvMoneyLog)).EndInit();
             this.panel2.ResumeLayout(false);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            this.tc_MoneyLogs.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

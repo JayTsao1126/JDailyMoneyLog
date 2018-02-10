@@ -146,20 +146,20 @@ namespace JDailyMoneyLog
         {
             Dictionary<string, int> list = new Dictionary<string, int>();
 
-            list.Add("資產", (from x in StorageBalanceList select x.Amount).Sum());
+            //list.Add("資產", (from x in StorageBalanceList select x.Amount).Sum());
             foreach (JStorageAmount q in StorageBalanceList)
             {
                 list.Add(q.Storage, q.Amount);
             }
 
-            return list;
+            return list.OrderBy(data => data.Key).ToDictionary(keyvalue => keyvalue.Key, keyvalue => keyvalue.Value);
         }
 
         public Dictionary<string, int> GetIncomeInfo()
         {
             Dictionary<string, int> list = new Dictionary<string, int>();
 
-            list.Add("收入", (from x in JMoney.MoneyLogList where x.Type.Equals("收入") select x.Amount).Sum());
+            //list.Add("收入", (from x in JMoney.MoneyLogList where x.Type.Equals("收入") select x.Amount).Sum());
             var query = from log in JMoney.MoneyLogList
                         where log.Type.Contains("收入")
                         group log by log.Item;
@@ -168,14 +168,14 @@ namespace JDailyMoneyLog
                 list.Add(q.Key, (from x in JMoney.MoneyLogList where (x.Type.Equals("收入") && x.Item.Equals(q.Key)) select x.Amount).Sum());
             }
 
-            return list;
+            return list.OrderBy(data => data.Key).ToDictionary(keyvalue => keyvalue.Key, keyvalue => keyvalue.Value);
         }
 
         public Dictionary<string, int> GetExpenseInfo()
         {
             Dictionary<string, int> list = new Dictionary<string, int>();
 
-            list.Add("支出", (from x in JMoney.MoneyLogList where x.Type.Contains("支出") select x.Amount).Sum());
+            //list.Add("支出", (from x in JMoney.MoneyLogList where x.Type.Contains("支出") select x.Amount).Sum());
             var query = from log in JMoney.MoneyLogList
                         where log.Type.Contains("支出")
                         group log by log.Item;
@@ -184,7 +184,7 @@ namespace JDailyMoneyLog
                 list.Add(q.Key, (from x in JMoney.MoneyLogList where (x.Type.Contains("支出") && x.Item.Equals(q.Key)) select x.Amount).Sum());
             }
 
-            return list;
+            return list.OrderByDescending(data => data.Value).ToDictionary(keyvalue => keyvalue.Key, keyvalue => keyvalue.Value);
         }
 
         public List<JMoneyLog> GetMoneyLogList(int year=0, int month=0, int day=0)

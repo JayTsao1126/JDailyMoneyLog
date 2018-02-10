@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -54,38 +55,41 @@ namespace JDailyMoneyLog
             tvMoneyStatus.Nodes.Clear();
 
             //資產
-            UpdateMoneyStatus(GlobalVar.MyMoney.GetAssetsInfo(), 0);
+            UpdateMoneyStatus("資產", GlobalVar.MyMoney.GetAssetsInfo(), 0);
             //收入
-            UpdateMoneyStatus(GlobalVar.MyMoney.GetIncomeInfo(), 1);
+            UpdateMoneyStatus("收入", GlobalVar.MyMoney.GetIncomeInfo(), 1);
             //支出
-            UpdateMoneyStatus(GlobalVar.MyMoney.GetExpenseInfo(), 2);
+            UpdateMoneyStatus("支出", GlobalVar.MyMoney.GetExpenseInfo(), 2);
             CreateChart(GlobalVar.MyMoney.GetExpenseInfo());
 
             tvMoneyStatus.ExpandAll();
         }
 
-        private void UpdateMoneyStatus(Dictionary<string, int> dictionary, int imgidx)
+        private void UpdateMoneyStatus(string AssetName, Dictionary<string, int> dictionary, int imgidx)
         {
-            KeyValuePair<string, int> pair = dictionary.First();    //取出第一筆資料
-            var sAssets = $"{pair.Key} : {pair.Value:C0}";
-            TreeNode tnAssets = new TreeNode(sAssets, imgidx, imgidx);
-            dictionary.Remove(pair.Key);    //移除第一筆資料
+            //KeyValuePair<string, int> pair = dictionary.First();    //取出第一筆資料
+            //var sAssets = $"{pair.Key} : {pair.Value:C0}";
+            TreeNode tnAssets = new TreeNode("", imgidx, imgidx);
+            //dictionary.Remove(pair.Key);    //移除第一筆資料
+            int AssetValue = 0;
             foreach (KeyValuePair<string, int> item in dictionary)
             {
+                AssetValue += item.Value;
                 tnAssets.Nodes.Add(item.Key, $"{item.Key} : {item.Value:C0}", imgidx, imgidx);
                 if (item.Value < 0)
                 {
                     tnAssets.Nodes[item.Key].ForeColor = Color.Red;
                 }
             }
+            tnAssets.Text = $"{AssetName} : {AssetValue:C0}";
             tvMoneyStatus.Nodes.Add(tnAssets);
 
         }
 
         void CreateChart(Dictionary<string, int> dictionary)
         {
-            KeyValuePair<string, int> pair = dictionary.First();    //取出第一筆資料
-            dictionary.Remove(pair.Key);    //移除第一筆資料
+            //KeyValuePair<string, int> pair = dictionary.First();    //取出第一筆資料
+            //dictionary.Remove(pair.Key);    //移除第一筆資料
 
             string[] xValues = dictionary.Keys.ToArray();
             int[] yValues = dictionary.Values.ToArray();
@@ -232,6 +236,18 @@ namespace JDailyMoneyLog
                 //更新主畫面
                 UpdateMoneyInfoCallback();
             }
+        }
+
+        private void 關於DMLToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show($"Version : {FileVersionInfo.GetVersionInfo(this.GetType().Assembly.Location).FileVersion.ToString()}");
+        }
+
+        private void 離開ToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            //Application.Exit();
+            this.Close();
+            Environment.Exit(Environment.ExitCode);
         }
     }
 }

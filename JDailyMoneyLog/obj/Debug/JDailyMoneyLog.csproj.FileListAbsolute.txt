@@ -24,3 +24,4 @@ D:\VS2017\JDailyMoneyLog\JDailyMoneyLog\obj\Debug\JDailyMoneyLog.csproj.Generate
 D:\VS2017\JDailyMoneyLog\JDailyMoneyLog\obj\Debug\JDailyMoneyLog.csproj.CoreCompileInputs.cache
 D:\VS2017\JDailyMoneyLog\JDailyMoneyLog\obj\Debug\JDailyMoneyLog.exe
 D:\VS2017\JDailyMoneyLog\JDailyMoneyLog\obj\Debug\JDailyMoneyLog.pdb
+D:\VS2017\JDailyMoneyLog\JDailyMoneyLog\obj\Debug\JDailyMoneyLog.csprojResolveAssemblyReference.cache
