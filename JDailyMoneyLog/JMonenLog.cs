@@ -19,6 +19,9 @@ namespace JDailyMoneyLog
      * 轉帳 = "提現", "繳信用卡", "轉固支", "轉儲蓄", "其他"
     */
     
+    /// <summary>
+    /// 帳目紀錄資料結構類別
+    /// </summary>
     public class JMoneyLog
     {
         public int SerialNo { get; set; }  //序號(時間戳記) - 【唯一】
@@ -31,16 +34,22 @@ namespace JDailyMoneyLog
         public string Remark { get; set; }    //補充說明
     }
 
+    /// <summary>
+    /// 帳戶資料結構類別
+    /// </summary>
     public class JStorageAmount
     {
         public string Storage { get; set; }  //帳戶 - 【唯一】
         public int Amount { get; set; }     // $
     }
 
+    /// <summary>
+    /// 帳目管理資料結構類別
+    /// </summary>
     public class JMoneyLogs
     {
         public List<JStorageAmount> StorageAmountList { get; set; }     //各帳戶初始金額
-        public List<JMoneyLog> MoneyLogList { get; set; }       //消費紀錄
+        public List<JMoneyLog> MoneyLogList { get; set; }       //帳目紀錄
 
         public JMoneyLogs()
         {
@@ -139,53 +148,80 @@ namespace JDailyMoneyLog
         }
 
         /// <summary>
-        /// 取得資產資訊
+        /// 取得帳本資訊
         /// </summary>
+        /// <param name="type">帳目類型,分為"資產"、"收入"、"支出"</param>
         /// <returns></returns>
-        public Dictionary<string, int> GetAssetsInfo()
+        public Dictionary<string, int> GetMoneyInfo(string type)
         {
             Dictionary<string, int> list = new Dictionary<string, int>();
-
-            //list.Add("資產", (from x in StorageBalanceList select x.Amount).Sum());
-            foreach (JStorageAmount q in StorageBalanceList)
+            switch (type)
             {
-                list.Add(q.Storage, q.Amount);
+                case "資產":
+                    {
+                        foreach (JStorageAmount q in StorageBalanceList)
+                        {
+                            list.Add(q.Storage, q.Amount);
+                        }
+                    }
+                    break;
+                case "收入":
+                case "支出":
+                    {
+                        var query = from log in JMoney.MoneyLogList
+                                    where log.Type.Contains(type)
+                                    group log by log.Item;
+                        foreach (var q in query)
+                        {
+                            list.Add(q.Key, (from x in JMoney.MoneyLogList where (x.Type.Contains(type) && x.Item.Equals(q.Key)) select x.Amount).Sum());
+                        }
+                    }
+                    break;
             }
-
             return list.OrderBy(data => data.Key).ToDictionary(keyvalue => keyvalue.Key, keyvalue => keyvalue.Value);
         }
 
-        public Dictionary<string, int> GetIncomeInfo()
-        {
-            Dictionary<string, int> list = new Dictionary<string, int>();
+        //public Dictionary<string, int> GetAssetsInfo()
+        //{
+        //    Dictionary<string, int> list = new Dictionary<string, int>();
+            
+        //    foreach (JStorageAmount q in StorageBalanceList)
+        //    {
+        //        list.Add(q.Storage, q.Amount);
+        //    }
 
-            //list.Add("收入", (from x in JMoney.MoneyLogList where x.Type.Equals("收入") select x.Amount).Sum());
-            var query = from log in JMoney.MoneyLogList
-                        where log.Type.Contains("收入")
-                        group log by log.Item;
-            foreach (var q in query)
-            {
-                list.Add(q.Key, (from x in JMoney.MoneyLogList where (x.Type.Equals("收入") && x.Item.Equals(q.Key)) select x.Amount).Sum());
-            }
+        //    return list.OrderBy(data => data.Key).ToDictionary(keyvalue => keyvalue.Key, keyvalue => keyvalue.Value);
+        //}
 
-            return list.OrderBy(data => data.Key).ToDictionary(keyvalue => keyvalue.Key, keyvalue => keyvalue.Value);
-        }
+        //public Dictionary<string, int> GetIncomeInfo()
+        //{
+        //    Dictionary<string, int> list = new Dictionary<string, int>();
 
-        public Dictionary<string, int> GetExpenseInfo()
-        {
-            Dictionary<string, int> list = new Dictionary<string, int>();
+        //    var query = from log in JMoney.MoneyLogList
+        //                where log.Type.Contains("收入")
+        //                group log by log.Item;
+        //    foreach (var q in query)
+        //    {
+        //        list.Add(q.Key, (from x in JMoney.MoneyLogList where (x.Type.Equals("收入") && x.Item.Equals(q.Key)) select x.Amount).Sum());
+        //    }
 
-            //list.Add("支出", (from x in JMoney.MoneyLogList where x.Type.Contains("支出") select x.Amount).Sum());
-            var query = from log in JMoney.MoneyLogList
-                        where log.Type.Contains("支出")
-                        group log by log.Item;
-            foreach (var q in query)
-            {
-                list.Add(q.Key, (from x in JMoney.MoneyLogList where (x.Type.Contains("支出") && x.Item.Equals(q.Key)) select x.Amount).Sum());
-            }
+        //    return list.OrderBy(data => data.Key).ToDictionary(keyvalue => keyvalue.Key, keyvalue => keyvalue.Value);
+        //}
 
-            return list.OrderByDescending(data => data.Value).ToDictionary(keyvalue => keyvalue.Key, keyvalue => keyvalue.Value);
-        }
+        //public Dictionary<string, int> GetExpenseInfo()
+        //{
+        //    Dictionary<string, int> list = new Dictionary<string, int>();
+
+        //    var query = from log in JMoney.MoneyLogList
+        //                where log.Type.Contains("支出")
+        //                group log by log.Item;
+        //    foreach (var q in query)
+        //    {
+        //        list.Add(q.Key, (from x in JMoney.MoneyLogList where (x.Type.Contains("支出") && x.Item.Equals(q.Key)) select x.Amount).Sum());
+        //    }
+
+        //    return list.OrderByDescending(data => data.Value).ToDictionary(keyvalue => keyvalue.Key, keyvalue => keyvalue.Value);
+        //}
 
         public List<JMoneyLog> GetMoneyLogList(int year=0, int month=0, int day=0)
         {

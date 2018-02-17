@@ -19,7 +19,7 @@ namespace JDailyMoneyLog
         UpdateMoneyInfoDelegate updateMoneyInfo = null;
 
         private Series _series = new Series();
-        private bool is3D;
+        private bool is3D = false;
 
         public DML_MainF()
         {
@@ -54,23 +54,38 @@ namespace JDailyMoneyLog
             //更新資產統計表
             tvMoneyStatus.Nodes.Clear();
 
-            //資產
-            UpdateMoneyStatus("資產", GlobalVar.MyMoney.GetAssetsInfo(), 0);
-            //收入
-            UpdateMoneyStatus("收入", GlobalVar.MyMoney.GetIncomeInfo(), 1);
-            //支出
-            UpdateMoneyStatus("支出", GlobalVar.MyMoney.GetExpenseInfo(), 2);
-            CreateChart(GlobalVar.MyMoney.GetExpenseInfo());
+            UpdateMoneyStatus("資產");
+            UpdateMoneyStatus("收入");
+            UpdateMoneyStatus("支出");
+            CreateChart("支出");
 
             tvMoneyStatus.ExpandAll();
         }
 
-        private void UpdateMoneyStatus(string AssetName, Dictionary<string, int> dictionary, int imgidx)
+        private void UpdateMoneyStatus(string AssetType)
         {
-            //KeyValuePair<string, int> pair = dictionary.First();    //取出第一筆資料
-            //var sAssets = $"{pair.Key} : {pair.Value:C0}";
+            Dictionary<string, int> dictionary = GlobalVar.MyMoney.GetMoneyInfo(AssetType);
+            int imgidx = 0;
+            switch (AssetType)
+            {
+                case "資產":
+                    {
+                        imgidx = 0;
+                    }
+                    break;
+                case "收入":
+                    {
+                        imgidx = 1;
+                    }
+                    break;
+
+                case "支出":
+                    {
+                        imgidx = 2;
+                    }
+                    break;
+            }
             TreeNode tnAssets = new TreeNode("", imgidx, imgidx);
-            //dictionary.Remove(pair.Key);    //移除第一筆資料
             int AssetValue = 0;
             foreach (KeyValuePair<string, int> item in dictionary)
             {
@@ -81,15 +96,13 @@ namespace JDailyMoneyLog
                     tnAssets.Nodes[item.Key].ForeColor = Color.Red;
                 }
             }
-            tnAssets.Text = $"{AssetName} : {AssetValue:C0}";
+            tnAssets.Text = $"{AssetType} : {AssetValue:C0}";
             tvMoneyStatus.Nodes.Add(tnAssets);
-
         }
 
-        void CreateChart(Dictionary<string, int> dictionary)
+        void CreateChart(string AssetType)
         {
-            //KeyValuePair<string, int> pair = dictionary.First();    //取出第一筆資料
-            //dictionary.Remove(pair.Key);    //移除第一筆資料
+            Dictionary<string, int> dictionary = GlobalVar.MyMoney.GetMoneyInfo(AssetType).OrderByDescending(data => data.Value).ToDictionary(keyvalue => keyvalue.Key, keyvalue => keyvalue.Value);
 
             string[] xValues = dictionary.Keys.ToArray();
             int[] yValues = dictionary.Values.ToArray();
