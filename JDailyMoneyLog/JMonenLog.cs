@@ -40,7 +40,7 @@ namespace JDailyMoneyLog
     public class JStorageAmount
     {
         public string Storage { get; set; }  //帳戶 - 【唯一】
-        public int Amount { get; set; }     // $
+        public int Amount { get; set; }     // $ (餘額)
     }
 
     /// <summary>
@@ -49,22 +49,51 @@ namespace JDailyMoneyLog
     public class JMoneyLogs
     {
         public List<JStorageAmount> StorageAmountList { get; set; }     //各帳戶初始金額
+        public List<JStorageAmount> StorageBalanceList { get; set; }     //各帳戶目前餘額
         public List<JMoneyLog> MoneyLogList { get; set; }       //帳目紀錄
 
         public JMoneyLogs()
         {
             StorageAmountList = new List<JStorageAmount>();
+            StorageBalanceList = new List<JStorageAmount>();
             MoneyLogList = new List<JMoneyLog>();
+        }
+    }
+
+    public class MoneyLogComparer : IComparer<JMoneyLog>
+    {
+        public int Compare(JMoneyLog x, JMoneyLog y)
+        {
+            if (x.Date > y.Date)
+            {
+                return -1;
+            }
+            else if (x.Date < y.Date)
+            {
+                return 1;
+            }
+            else
+            {
+                //日期相同
+                if (x.SerialNo > y.SerialNo)
+                {
+                    return -1;
+                }
+                else
+                {
+                    return 1;
+                }
+            }
         }
     }
 
     /// <summary>
     /// J專用記帳系統
     /// </summary>
-    public class JMoneySystem
+        public class JMoneySystem
     {
         private JMoneyLogs JMoney = null;
-        private List<JStorageAmount> StorageBalanceList = null;     //各帳戶目前餘額(即時計算)
+        //private List<JStorageAmount> StorageBalanceList = null;     //各帳戶目前餘額(即時計算)
         //private string MoneyLogFilePath = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "DataSet", "MoneyLogs.json");
 
         public string MoneyLogFilePath { get; set; }
@@ -72,10 +101,8 @@ namespace JDailyMoneyLog
         public JMoneySystem()
         {
             JMoney = new JMoneyLogs();
-            StorageBalanceList = new List<JStorageAmount>();
+            //StorageBalanceList = new List<JStorageAmount>();
             MoneyLogFilePath = string.Empty;
-
-            //Load(MoneyLogFilePath);
         }
 
         /// <summary>
@@ -88,6 +115,7 @@ namespace JDailyMoneyLog
             {
                 string ss = File.ReadAllText(file_path, Encoding.Unicode);
                 JMoney = JsonConvert.DeserializeObject<JMoneyLogs>(ss);
+                JMoney.MoneyLogList.Sort(new MoneyLogComparer()); //帳目紀錄排序
                 RecalcStorageBalance();
             }
         }
@@ -97,7 +125,7 @@ namespace JDailyMoneyLog
         /// </summary>
         private void RecalcStorageBalance()
         {
-            StorageBalanceList = DeepCopy<List<JStorageAmount>>(JMoney.StorageAmountList);
+            JMoney.StorageBalanceList = DeepCopy<List<JStorageAmount>>(JMoney.StorageAmountList);
             foreach (JMoneyLog moneyLog in JMoney.MoneyLogList)
             {
                 CalcStorageBalance(moneyLog);
@@ -139,12 +167,12 @@ namespace JDailyMoneyLog
 
         private int GetStorageBalance(string storage)
         {
-            int idx = StorageBalanceList.FindIndex(x => x.Storage.Equals(storage));
+            int idx = JMoney.StorageBalanceList.FindIndex(x => x.Storage.Equals(storage));
             if (idx < 0)
             {
                 return 0;
             }
-            return StorageBalanceList[idx].Amount;
+            return JMoney.StorageBalanceList[idx].Amount;
         }
 
         /// <summary>
@@ -159,7 +187,7 @@ namespace JDailyMoneyLog
             {
                 case "資產":
                     {
-                        foreach (JStorageAmount q in StorageBalanceList)
+                        foreach (JStorageAmount q in JMoney.StorageBalanceList)
                         {
                             list.Add(q.Storage, q.Amount);
                         }
@@ -168,60 +196,26 @@ namespace JDailyMoneyLog
                 case "收入":
                 case "支出":
                     {
+                        //var query = from log in JMoney.MoneyLogList
+                        //            where log.Type.Contains(type)
+                        //            group log by log.Item;
+                        //foreach (var q in query)
+                        //{
+                        //    list.Add(q.Key, (from x in JMoney.MoneyLogList where (x.Type.Contains(type) && x.Item.Equals(q.Key)) select x.Amount).Sum());
+                        //}
+
                         var query = from log in JMoney.MoneyLogList
                                     where log.Type.Contains(type)
-                                    group log by log.Item;
+                                    group log by log.Type;
                         foreach (var q in query)
                         {
-                            list.Add(q.Key, (from x in JMoney.MoneyLogList where (x.Type.Contains(type) && x.Item.Equals(q.Key)) select x.Amount).Sum());
+                            list.Add(q.Key, (from x in JMoney.MoneyLogList where (x.Type.Contains(type) && x.Type.Equals(q.Key)) select x.Amount).Sum());
                         }
                     }
                     break;
             }
             return list.OrderBy(data => data.Key).ToDictionary(keyvalue => keyvalue.Key, keyvalue => keyvalue.Value);
         }
-
-        //public Dictionary<string, int> GetAssetsInfo()
-        //{
-        //    Dictionary<string, int> list = new Dictionary<string, int>();
-            
-        //    foreach (JStorageAmount q in StorageBalanceList)
-        //    {
-        //        list.Add(q.Storage, q.Amount);
-        //    }
-
-        //    return list.OrderBy(data => data.Key).ToDictionary(keyvalue => keyvalue.Key, keyvalue => keyvalue.Value);
-        //}
-
-        //public Dictionary<string, int> GetIncomeInfo()
-        //{
-        //    Dictionary<string, int> list = new Dictionary<string, int>();
-
-        //    var query = from log in JMoney.MoneyLogList
-        //                where log.Type.Contains("收入")
-        //                group log by log.Item;
-        //    foreach (var q in query)
-        //    {
-        //        list.Add(q.Key, (from x in JMoney.MoneyLogList where (x.Type.Equals("收入") && x.Item.Equals(q.Key)) select x.Amount).Sum());
-        //    }
-
-        //    return list.OrderBy(data => data.Key).ToDictionary(keyvalue => keyvalue.Key, keyvalue => keyvalue.Value);
-        //}
-
-        //public Dictionary<string, int> GetExpenseInfo()
-        //{
-        //    Dictionary<string, int> list = new Dictionary<string, int>();
-
-        //    var query = from log in JMoney.MoneyLogList
-        //                where log.Type.Contains("支出")
-        //                group log by log.Item;
-        //    foreach (var q in query)
-        //    {
-        //        list.Add(q.Key, (from x in JMoney.MoneyLogList where (x.Type.Contains("支出") && x.Item.Equals(q.Key)) select x.Amount).Sum());
-        //    }
-
-        //    return list.OrderByDescending(data => data.Value).ToDictionary(keyvalue => keyvalue.Key, keyvalue => keyvalue.Value);
-        //}
 
         public List<JMoneyLog> GetMoneyLogList(int year=0, int month=0, int day=0)
         {
@@ -254,23 +248,33 @@ namespace JDailyMoneyLog
                 Remark = remark
             };
             JMoney.MoneyLogList.Add(moneyLog);
-            RecalcStorageBalance();
+            JMoney.MoneyLogList.Sort(new MoneyLogComparer()); //帳目紀錄排序
+            //RecalcStorageBalance();
+            CalcStorageBalance(moneyLog);
+            Save(MoneyLogFilePath);
         }
 
-        public void Update(JMoneyLog log)
+        public void Update(JMoneyLog moneyLog)
         {
-            int idx = JMoney.MoneyLogList.FindIndex(x => x.SerialNo.Equals(log.SerialNo));
+            int idx = JMoney.MoneyLogList.FindIndex(x => x.SerialNo.Equals(moneyLog.SerialNo));
             if (idx >= 0)
             {
-                JMoney.MoneyLogList[idx].Date = log.Date;
-                JMoney.MoneyLogList[idx].Type = log.Type;
-                JMoney.MoneyLogList[idx].Item = log.Item;
-                JMoney.MoneyLogList[idx].Amount = log.Amount;
-                JMoney.MoneyLogList[idx].Source = log.Source;
-                JMoney.MoneyLogList[idx].Target = log.Target;
-                JMoney.MoneyLogList[idx].Remark = log.Remark;
+                CalcStorageBalance(JMoney.MoneyLogList[idx], true);     //先將舊的紀錄還原
+
+                //更新紀錄內容
+                JMoney.MoneyLogList[idx].Date = moneyLog.Date;
+                JMoney.MoneyLogList[idx].Type = moneyLog.Type;
+                JMoney.MoneyLogList[idx].Item = moneyLog.Item;
+                JMoney.MoneyLogList[idx].Amount = moneyLog.Amount;
+                JMoney.MoneyLogList[idx].Source = moneyLog.Source;
+                JMoney.MoneyLogList[idx].Target = moneyLog.Target;
+                JMoney.MoneyLogList[idx].Remark = moneyLog.Remark;
+
+                CalcStorageBalance(JMoney.MoneyLogList[idx]);     //計算新紀錄的結果
+                JMoney.MoneyLogList.Sort(new MoneyLogComparer()); //帳目紀錄排序
+                Save(MoneyLogFilePath);
             }
-            RecalcStorageBalance();
+            //RecalcStorageBalance();
         }
 
         public void Delete(int sn)
@@ -278,72 +282,85 @@ namespace JDailyMoneyLog
             int idx = JMoney.MoneyLogList.FindIndex(x => x.SerialNo.Equals(sn));
             if (idx >= 0)
             {
+                CalcStorageBalance(JMoney.MoneyLogList[idx], true);     //將舊的紀錄還原
+
+                //將記錄移除
                 JMoney.MoneyLogList.RemoveAt(idx);
+
+                JMoney.MoneyLogList.Sort(new MoneyLogComparer()); //帳目紀錄排序
+                Save(MoneyLogFilePath);
             }
-            RecalcStorageBalance();
+            //RecalcStorageBalance();
         }
 
         /// <summary>
         /// 計算帳戶餘額
         /// </summary>
         /// <param name="moneyLog">消費紀錄</param>
-        private void CalcStorageBalance(JMoneyLog moneyLog)
+        /// <param name="revert">是否反向(還原消費內容)</param>
+        private void CalcStorageBalance(JMoneyLog moneyLog, bool revert=false)
         {
+            int amount = moneyLog.Amount;
+            if (revert)
+            {
+                amount = -moneyLog.Amount;
+            }
+
             if (moneyLog.Type.Contains("支出"))
             {
                 //Source 帳戶金額要減少
-                int idx = StorageBalanceList.FindIndex(x => x.Storage.Equals(moneyLog.Source));
+                int idx = JMoney.StorageBalanceList.FindIndex(x => x.Storage.Equals(moneyLog.Source));
                 if (idx < 0)
                 {
                     //帳戶餘額項目中無此帳戶資料，加入此帳戶餘額
-                    StorageBalanceList.Add(new JStorageAmount() { Storage = moneyLog.Source, Amount = -moneyLog.Amount });
+                    JMoney.StorageBalanceList.Add(new JStorageAmount() { Storage = moneyLog.Source, Amount = -amount });
                 }
                 else
                 {
                     //扣除金額
-                    StorageBalanceList[idx].Amount -= moneyLog.Amount;
+                    JMoney.StorageBalanceList[idx].Amount -= amount;
                 }
             }
             else if (moneyLog.Type.Contains("收入"))
             {
                 //Target 帳戶金額要增加
-                int idx = StorageBalanceList.FindIndex(x => x.Storage.Equals(moneyLog.Target));
+                int idx = JMoney.StorageBalanceList.FindIndex(x => x.Storage.Equals(moneyLog.Target));
                 if (idx < 0)
                 {
                     //帳戶餘額項目中無此帳戶資料，加入此帳戶餘額
-                    StorageBalanceList.Add(new JStorageAmount() { Storage = moneyLog.Target, Amount = moneyLog.Amount });
+                    JMoney.StorageBalanceList.Add(new JStorageAmount() { Storage = moneyLog.Target, Amount = amount });
                 }
                 else
                 {
                     //扣除金額
-                    StorageBalanceList[idx].Amount += moneyLog.Amount;
+                    JMoney.StorageBalanceList[idx].Amount += amount;
                 }
             }
             else if (moneyLog.Type.Contains("轉帳"))
             {
                 //Source 帳戶金額要減少
-                int idx = StorageBalanceList.FindIndex(x => x.Storage.Equals(moneyLog.Source));
+                int idx = JMoney.StorageBalanceList.FindIndex(x => x.Storage.Equals(moneyLog.Source));
                 if (idx < 0)
                 {
                     //帳戶餘額項目中無此帳戶資料，加入此帳戶餘額
-                    StorageBalanceList.Add(new JStorageAmount() { Storage = moneyLog.Source, Amount = -moneyLog.Amount });
+                    JMoney.StorageBalanceList.Add(new JStorageAmount() { Storage = moneyLog.Source, Amount = -amount });
                 }
                 else
                 {
                     //扣除金額
-                    StorageBalanceList[idx].Amount -= moneyLog.Amount;
+                    JMoney.StorageBalanceList[idx].Amount -= amount;
                 }
                 //Target 帳戶金額要增加
-                idx = StorageBalanceList.FindIndex(x => x.Storage.Equals(moneyLog.Target));
+                idx = JMoney.StorageBalanceList.FindIndex(x => x.Storage.Equals(moneyLog.Target));
                 if (idx < 0)
                 {
                     //帳戶餘額項目中無此帳戶資料，加入此帳戶餘額
-                    StorageBalanceList.Add(new JStorageAmount() { Storage = moneyLog.Target, Amount = moneyLog.Amount });
+                    JMoney.StorageBalanceList.Add(new JStorageAmount() { Storage = moneyLog.Target, Amount = amount });
                 }
                 else
                 {
                     //扣除金額
-                    StorageBalanceList[idx].Amount += moneyLog.Amount;
+                    JMoney.StorageBalanceList[idx].Amount += amount;
                 }
             }
             else

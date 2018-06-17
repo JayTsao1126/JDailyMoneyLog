@@ -24,3 +24,17 @@ D:\VS2017\JDailyMoneyLog\JDailyMoneyLog\obj\Debug\JDailyMoneyLog.csproj.Generate
 D:\VS2017\JDailyMoneyLog\JDailyMoneyLog\obj\Debug\JDailyMoneyLog.csproj.CoreCompileInputs.cache
 D:\VS2017\JDailyMoneyLog\JDailyMoneyLog\obj\Debug\JDailyMoneyLog.exe
 D:\VS2017\JDailyMoneyLog\JDailyMoneyLog\obj\Debug\JDailyMoneyLog.pdb
+D:\Programes\VS2017\JDailyMoneyLog\JDailyMoneyLog\bin\Debug\JDailyMoneyLog.exe.config
+D:\Programes\VS2017\JDailyMoneyLog\JDailyMoneyLog\bin\Debug\JDailyMoneyLog.exe
+D:\Programes\VS2017\JDailyMoneyLog\JDailyMoneyLog\bin\Debug\JDailyMoneyLog.pdb
+D:\Programes\VS2017\JDailyMoneyLog\JDailyMoneyLog\bin\Debug\Newtonsoft.Json.dll
+D:\Programes\VS2017\JDailyMoneyLog\JDailyMoneyLog\bin\Debug\Newtonsoft.Json.xml
+D:\Programes\VS2017\JDailyMoneyLog\JDailyMoneyLog\obj\Debug\JDailyMoneyLog.DML_MainF.resources
+D:\Programes\VS2017\JDailyMoneyLog\JDailyMoneyLog\obj\Debug\JDailyMoneyLog.JMoneyLogInputF.resources
+D:\Programes\VS2017\JDailyMoneyLog\JDailyMoneyLog\obj\Debug\JDailyMoneyLog.JStorageInitialF.resources
+D:\Programes\VS2017\JDailyMoneyLog\JDailyMoneyLog\obj\Debug\JDailyMoneyLog.Properties.Resources.resources
+D:\Programes\VS2017\JDailyMoneyLog\JDailyMoneyLog\obj\Debug\JDailyMoneyLog.csproj.GenerateResource.cache
+D:\Programes\VS2017\JDailyMoneyLog\JDailyMoneyLog\obj\Debug\JDailyMoneyLog.csproj.CoreCompileInputs.cache
+D:\Programes\VS2017\JDailyMoneyLog\JDailyMoneyLog\obj\Debug\JDailyMoneyLog.csproj.CopyComplete
+D:\Programes\VS2017\JDailyMoneyLog\JDailyMoneyLog\obj\Debug\JDailyMoneyLog.exe
+D:\Programes\VS2017\JDailyMoneyLog\JDailyMoneyLog\obj\Debug\JDailyMoneyLog.pdb

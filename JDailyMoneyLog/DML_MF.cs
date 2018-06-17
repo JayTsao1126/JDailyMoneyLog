@@ -30,6 +30,7 @@ namespace JDailyMoneyLog
 
         private void DML_MainF_Load(object sender, EventArgs e)
         {
+            this.Text = $"Daily Money Log (v{FileVersionInfo.GetVersionInfo(this.GetType().Assembly.Location).FileVersion.ToString()})";
             //更新主畫面
             UpdateMoneyInfoCallback();
         }
@@ -49,17 +50,18 @@ namespace JDailyMoneyLog
             {
                 dgvMoneyLog.DataSource = null;
                 dgvMoneyLog.DataSource = ds;
+
+                //更新資產統計表
+                tvMoneyStatus.Nodes.Clear();
+
+                UpdateMoneyStatus("資產");
+                UpdateMoneyStatus("收入");
+                UpdateMoneyStatus("支出");
+                CreateChart("支出");
+
+                tvMoneyStatus.ExpandAll();
+
             }
-
-            //更新資產統計表
-            tvMoneyStatus.Nodes.Clear();
-
-            UpdateMoneyStatus("資產");
-            UpdateMoneyStatus("收入");
-            UpdateMoneyStatus("支出");
-            CreateChart("支出");
-
-            tvMoneyStatus.ExpandAll();
         }
 
         private void UpdateMoneyStatus(string AssetType)

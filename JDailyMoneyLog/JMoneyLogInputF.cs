@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.XPath;
 
 namespace JDailyMoneyLog
 {
@@ -129,9 +132,18 @@ namespace JDailyMoneyLog
             // e.KeyChar == (Char)8 -----------> Backpace
             // e.KeyChar == (Char)13-----------> Enter
 
-            if (Char.IsDigit(e.KeyChar) || Char.IsControl(e.KeyChar))
+            if (Char.IsDigit(e.KeyChar) || Char.IsControl(e.KeyChar) || Char.IsSymbol(e.KeyChar))
             {
                 e.Handled = false;
+                if (e.KeyChar == (Char)13)
+                {
+                    TextBox tb = sender as TextBox;
+                    if (tb.Text.Substring(0, 1) == "=")
+                    {
+                        double ret = EvaluateUsingXPathDocument(tb.Text.Substring(1));
+                        tb.Text = ret.ToString();
+                    }
+                }
             }
             else
             {
@@ -164,7 +176,7 @@ namespace JDailyMoneyLog
                 cbItem.Items.Clear();
                 cbItem.Items.AddRange(new string[] { "水費", "電費", "天然氣", "電話", "手機", "停車位", "教育費", "稅金", "保險", "房貸", "車貸", "信貸", "管理費", "第四台", "其他" });
                 cbItem.SelectedIndex = 0;
-                cbSource.SelectedIndex = 4; //固定支出帳戶
+                cbSource.SelectedIndex = 1; //現金
                 cbTarget.SelectedIndex = 0; //無
             }
             else if (cb.Text.Contains("特別支出"))
@@ -172,7 +184,7 @@ namespace JDailyMoneyLog
                 cbItem.Items.Clear();
                 cbItem.Items.AddRange(new string[] { "其他" });
                 cbItem.SelectedIndex = 0;
-                cbSource.SelectedIndex = 5; //儲蓄帳戶
+                cbSource.SelectedIndex = 1; //現金
                 cbTarget.SelectedIndex = 0; //無
             }
             else if (cb.Text.Contains("收入"))
@@ -192,6 +204,70 @@ namespace JDailyMoneyLog
                 cbTarget.SelectedIndex = 1; //現金
             }
         }
+
+        private void cbItem_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox cb = sender as ComboBox;
+            if (cbType.Text.Contains("固定支出"))
+            {
+                if (cb.Text.Contains("保險") || cb.Text.Contains("房貸"))
+                {
+                    cbSource.SelectedIndex = 4; //固支帳戶
+                    cbTarget.SelectedIndex = 0; //無
+                }
+                else
+                {
+                    cbSource.SelectedIndex = 1; //現金
+                    cbTarget.SelectedIndex = 0; //無
+                }
+            }
+            else if (cbType.Text.Contains("轉帳"))
+            {
+                if (cb.Text.Contains("繳信用卡"))
+                {
+                    cbSource.SelectedIndex = 1; //現金
+                    cbTarget.SelectedIndex = 2; //信用卡
+                }
+                else if (cb.Text.Contains("轉固支"))
+                {
+                    cbSource.SelectedIndex = 1; //現金
+                    cbTarget.SelectedIndex = 4; //固支帳戶
+                }
+                else if (cb.Text.Contains("轉儲蓄"))
+                {
+                    cbSource.SelectedIndex = 1; //現金
+                    cbTarget.SelectedIndex = 5; //儲蓄帳戶
+                }
+                else
+                {
+                    cbSource.SelectedIndex = 3; //薪資帳戶
+                    cbTarget.SelectedIndex = 1; //現金
+                }
+            }
+        }
+
+        /// <summary>
+        /// 使用 XPathDocument
+        /// </summary>
+        /// <param name="sExpression">數值運算式</param>
+        /// <returns>數值運算結果</returns>
+        public static double EvaluateUsingXPathDocument(string sExpression)
+        {
+            try
+            {
+                var xsltExpression = string.Format("number({0})",
+                        new Regex(@"([\+\-\*])").Replace(sExpression, " ${1} ")
+                                                .Replace("/", " div ")
+                                                .Replace("%", " mod "));
+
+                return (double)new XPathDocument(new StringReader("<r/>")).CreateNavigator().Evaluate(xsltExpression);
+            }
+            catch (Exception e)
+            {
+            }
+            return 0;
+        }
+
     }
 
 }
